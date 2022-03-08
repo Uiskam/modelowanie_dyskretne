@@ -3,6 +3,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,12 +22,14 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	private Board board;
 	private JButton start;
 	private JButton clear;
+    private JButton rainModeButton;
 	private JSlider pred;
 	private JFrame frame;
 	private int iterNum = 0;
 	private final int maxDelay = 500;
 	private final int initDelay = 100;
 	private boolean running = false;
+    private boolean rainMode = false;
 
 	public GUI(JFrame jf) {
 		frame = jf;
@@ -53,6 +56,11 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		clear.setToolTipText("Clears the board");
 		clear.addActionListener(this);
 
+        rainModeButton = new JButton("Rain mode: off");
+        rainModeButton.setActionCommand("Turn on rain");
+        rainModeButton.setToolTipText("Switch between normal and rain mode");
+        rainModeButton.addActionListener(this);
+
 		pred = new JSlider();
 		pred.setMinimum(0);
 		pred.setMaximum(maxDelay);
@@ -62,6 +70,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 
 		buttonPanel.add(start);
 		buttonPanel.add(clear);
+        buttonPanel.add(rainModeButton);
 		buttonPanel.add(pred);
 
 		board = new Board(1024, 768 - buttonPanel.getHeight());
@@ -77,11 +86,22 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		if (e.getSource().equals(timer)) {
 			iterNum++;
 			frame.setTitle("Game of Life (" + Integer.toString(iterNum) + " iteration)");
-			board.iteration();
+			if(rainMode) {
+                board.rainIteration();
+            }
+            else {
+                board.iteration();
+            }
 		} else {
 			String command = e.getActionCommand();
 			if (command.equals("Start")) {
 				if (!running) {
+                    if(rainMode) {
+                        board.rainInit();
+                    }
+                    else {
+                        board.reInit();
+                    }
 					timer.start();
 					start.setText("Pause");
 				} else {
@@ -98,7 +118,17 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 				start.setEnabled(true);
 				board.clear();
 				frame.setTitle("Cellular Automata Toolbox");
-			} 
+			}
+            else if (command.equals("Turn on rain")){
+                rainModeButton.setActionCommand("Turn off rain");
+                rainModeButton.setText("Rain mode: on");
+                rainMode = true;
+            }
+            else if (command.equals("Turn off rain")) {
+                rainModeButton.setActionCommand("Turn on rain");
+                rainModeButton.setText("Rain mode: off");
+                rainMode = false;
+            }
 
 		}
 	}
