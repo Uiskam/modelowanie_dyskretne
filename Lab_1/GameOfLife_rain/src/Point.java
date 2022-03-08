@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class Point {
@@ -14,7 +15,7 @@ public class Point {
         currentState = 0;
         nextState = 0;
         neighbors = new ArrayList<Point>();
-        int[] toRemainAliveConfig = {4,5,6,7,8};
+        int[] toRemainAliveConfig = {2,3};
         int[] toBecomeAliveConfig = {3};
         for (int j : toRemainAliveConfig) {
             toRemainAlive.add(j);
@@ -52,6 +53,16 @@ public class Point {
         }
     }
 
+    public void calculateNewRainState() {
+        if (this.neighbors.get(0).getState() > 0){
+            if(this.getState() == 0){
+                this.nextState = 6;
+            }
+            else {
+                this.nextState = this.currentState - 1;
+            }
+        }
+    }
     public void changeState() {
         currentState = nextState;
     }
@@ -69,5 +80,15 @@ public class Point {
             }
         }
         return counter;
+    }
+
+    public void drop() {
+        if(new Random().nextInt(100) >= 5) {
+            this.setState(6);
+        }
+    }
+
+    public void clearNei() {
+        this.neighbors = new ArrayList<Point>();
     }
 }
