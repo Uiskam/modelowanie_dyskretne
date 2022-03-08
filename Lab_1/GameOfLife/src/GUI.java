@@ -30,6 +30,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	private final int initDelay = 100;
 	private boolean running = false;
     private boolean rainMode = false;
+    private boolean nextMode = false;
 
 	public GUI(JFrame jf) {
 		frame = jf;
@@ -95,8 +96,10 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		} else {
 			String command = e.getActionCommand();
 			if (command.equals("Start")) {
+                rainMode = nextMode;
 				if (!running) {
                     if(rainMode) {
+                        board.clear();
                         board.rainInit();
                     }
                     else {
@@ -122,12 +125,12 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
             else if (command.equals("Turn on rain")){
                 rainModeButton.setActionCommand("Turn off rain");
                 rainModeButton.setText("Rain mode: on");
-                rainMode = true;
+                nextMode = true;
             }
             else if (command.equals("Turn off rain")) {
                 rainModeButton.setActionCommand("Turn on rain");
                 rainModeButton.setText("Rain mode: off");
-                rainMode = false;
+                nextMode = false;
             }
 
 		}

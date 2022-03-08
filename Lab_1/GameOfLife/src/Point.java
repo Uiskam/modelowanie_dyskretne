@@ -81,7 +81,7 @@ public class Point {
     }
 
     public void drop() {
-        if(new Random().nextInt(100) >= 99) {
+        if(new Random().nextInt(100) >= 96) {
             this.nextState = 6;
         }
     }
