@@ -89,7 +89,7 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 
 		for (x = 0; x < points.length; ++x) {
 			for (y = 0; y < points[x].length; ++y) {
-				//if(points[x][y].type==0){
+				if(points[x][y].type==0){
 					float change = points[x][y].getPressure();
 					if (change > 0.5) {
 						change = 0.5f;
@@ -99,13 +99,13 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 					}
 					float a = 0.5f + change;
 					g.setColor(new Color(a, a, a, 0.7f));
-			//	}
-				/*else if (points[x][y].type==1){
+				}
+				else if (points[x][y].type==1){
 					g.setColor(new Color(1.0f, 0.0f, 0.0f, 0.7f));
 				}
 				else if (points[x][y].type==2){
 					g.setColor(new Color(0.0f, 1.0f, 0.0f, 0.7f));
-				}*/
+				}
 				g.fillRect((x * size) + 1, (y * size) + 1, (size - 1), (size - 1));
 			}
 		}
@@ -120,7 +120,7 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 				points[x][y].clicked();
 			}
 			else {
-		//		points[x][y].type= editType;
+				points[x][y].type= editType;
 			}
 			this.repaint();
 		}
@@ -140,7 +140,7 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 				points[x][y].clicked();
 			}
 			else {
-			//	points[x][y].type= editType;
+				points[x][y].type= editType;
 			}
 			this.repaint();
 		}

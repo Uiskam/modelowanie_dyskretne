@@ -9,9 +9,12 @@ public class Point {
     public float wVel;
     public float sVel;
     public float pressure;
+    public static Integer[] types = {0, 1, 2};
+    int type;
 
     public Point() {
         clear();
+        type = 0;
     }
 
     public void clicked() {
@@ -28,17 +31,21 @@ public class Point {
     }
 
     public void updateVelocity() {
-        // velocity update
-        nVel = nVel - (nNeighbor.getPressure() - pressure);
-        eVel = eVel - (eNeighbor.getPressure() - pressure);
-        sVel = sVel - (sNeighbor.getPressure() - pressure);
-        wVel = wVel - (wNeighbor.getPressure() - pressure);
+        if(type == 0) {
+            // velocity update
+            nVel = nVel - (nNeighbor.getPressure() - pressure);
+            eVel = eVel - (eNeighbor.getPressure() - pressure);
+            sVel = sVel - (sNeighbor.getPressure() - pressure);
+            wVel = wVel - (wNeighbor.getPressure() - pressure);
+        }
     }
 
     public void updatePresure() {
         // pressure update
-        float cSquared = (float) 0.5; //maximal wave velocity
-        pressure = pressure - cSquared * (nVel + eVel + sVel + wVel);
+        if (type == 0) {
+            float cSquared = (float) 0.5; //maximal wave velocity
+            pressure = pressure - cSquared * (nVel + eVel + sVel + wVel);
+        }
     }
 
     public float getPressure() {
