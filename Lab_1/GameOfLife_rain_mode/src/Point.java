@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class Point {
@@ -14,7 +15,7 @@ public class Point {
         currentState = 0;
         nextState = 0;
         neighbors = new ArrayList<Point>();
-        int[] toRemainAliveConfig = {4,5,6,7,8};
+        int[] toRemainAliveConfig = {4, 5, 6, 7, 8};
         int[] toBecomeAliveConfig = {3};
         for (int j : toRemainAliveConfig) {
             toRemainAlive.add(j);
@@ -37,18 +38,11 @@ public class Point {
     }
 
     public void calculateNewState() {
-        if (this.getState() != 0) {
-            if (this.toRemainAlive.contains(countAliveNeighbors())) {
-                this.nextState = 1;
-            } else {
-                this.nextState = 0;
-            }
-        } else {
-            if (this.toBecomeAlive.contains(countAliveNeighbors())) {
-                this.nextState = 1;
-            } else {
-                this.nextState = 0;
-            }
+        if(this.getState() == 0 && this.neighbors.size() > 0 && this.neighbors.get(0).getState() > 0){
+            this.nextState = 6;
+        }
+        else if(this.getState() > 0){
+            this.nextState = this.currentState - 1;
         }
     }
 
@@ -69,5 +63,11 @@ public class Point {
             }
         }
         return counter;
+    }
+
+    public void drop() {
+        if (new Random().nextInt(100) >= 99) {
+            this.nextState = 6;
+        }
     }
 }
