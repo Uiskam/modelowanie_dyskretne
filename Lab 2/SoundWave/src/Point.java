@@ -11,6 +11,7 @@ public class Point {
     public float pressure;
     public static Integer[] types = {0, 1, 2};
     int type;
+    public int sinInput = 0;
 
     public Point() {
         clear();
@@ -45,6 +46,11 @@ public class Point {
         if (type == 0) {
             float cSquared = (float) 0.5; //maximal wave velocity
             pressure = pressure - cSquared * (nVel + eVel + sVel + wVel);
+        }
+        else if (type == 2) {
+            double radians = Math.toRadians(sinInput);
+            pressure = (float) (Math.sin(radians));
+            sinInput += 60;
         }
     }
 
