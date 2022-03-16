@@ -57,4 +57,8 @@ public class Point {
     public float getPressure() {
         return pressure;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e3c3c4d6a155295aad40c252d2a888a636f62569
