@@ -27,16 +27,23 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
                 points[x][y] = new Point();
             }
         }
-        // TODO
+        for (int x = 0; x < points.length; ++x) {
+            for (int y = 0; y < points[x].length; ++y) {
+                points[x][y].next = points[(x + 1) % points.length][y];
+            }
+        }
     }
 
     public void iteration() {
 
-        // TODO
-
-        for (int x = 0; x < points.length - 1; ++x) {
-            for (int y = 0; y < points[x].length - 1; ++y) {
-                // TODO
+        for (int x = 0; x < points.length; ++x) {
+            for (int y = 0; y < points[x].length; ++y) {
+                points[x][y].moved = false;
+            }
+        }
+        for (int x = 0; x < points.length; ++x) {
+            for (int y = 0; y < points[x].length; ++y) {
+                points[x][y].move();
             }
         }
         this.repaint();
@@ -82,10 +89,11 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
         for (x = 0; x < points.length; ++x) {
             for (y = 0; y < points[x].length; ++y) {
                 float a = 1.0F;
-
-                // TODO
-                //g.setColor(new Color(R, G, B, 0.7f));
-
+                if (points[x][y].type == 1) {
+                    g.setColor(new Color(0x000000));
+                } else {
+                    g.setColor(new Color(0xffffff));
+                }
                 g.fillRect((x * size) + 1, (y * size) + 1, (size - 1), (size - 1));
             }
         }

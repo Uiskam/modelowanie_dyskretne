@@ -1,16 +1,23 @@
 public class Point {
+    public int type; //0 - empty space 1 - car
+    public Point next; //neigh point
+    public boolean moved; //if point was changed in current iteration
 
-    // TODO
 
     public void move() {
-        // TODO
+        if (type == 1 && next.type == 0 && !moved) {
+            next.type = 1;
+            moved = true;
+            next.moved = true;
+            type = 0;
+        }
     }
 
     public void clicked() {
-        // TODO
+        type = 1;
     }
 
     public void clear() {
-        // TODO
+        type = 0;
     }
 }
