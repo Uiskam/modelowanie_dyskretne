@@ -27,11 +27,18 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
                 points[x][y] = new Point();
             }
         }
+        for (int x = 0; x < points.length; x++) {
+            for (int y = 0; y < points[x].length; y++) {
+                if (y != 1 && y != 2)
+                    points[x][y].type = 5;
+            }
+        }
         for (int x = 0; x < points.length; ++x) {
             for (int y = 0; y < points[x].length; ++y) {
                 points[x][y].next = points[(x + 1) % points.length][y];
             }
         }
+
     }
 
     public void iteration() {
@@ -90,9 +97,17 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
             for (y = 0; y < points[x].length; ++y) {
                 float a = 1.0F;
                 if (points[x][y].type == 1) {
-                    g.setColor(new Color(0x000000));
+                    g.setColor(new Color(255, 201, 14));
+                } else if (points[x][y].type == 2) {
+                    g.setColor(new Color(0, 162, 232));
+                } else if (points[x][y].type == 3) {
+                    g.setColor(new Color(232, 0, 0));
+                } else if (points[x][y].type == 5) {
+                    g.setColor(new Color(0, 121, 0));
+                } else if (points[x][y].type == 0) {
+                        g.setColor(new Color(0xffffff));
                 } else {
-                    g.setColor(new Color(0xffffff));
+                    System.out.println("NON EXISTING TYPE");
                 }
                 g.fillRect((x * size) + 1, (y * size) + 1, (size - 1), (size - 1));
             }
