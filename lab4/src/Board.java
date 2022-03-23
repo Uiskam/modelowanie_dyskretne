@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 public class Board extends JComponent implements MouseInputListener, ComponentListener {
     private static final long serialVersionUID = 1L;
     private Point[][] points;
-    private int size = 10;
+    private int size = 25;
     public int editType = 0;
 
     public Board(int length, int height) {

@@ -10,9 +10,9 @@ public class Point {
         if (this.type == 1 && !this.moved) {
             this.velocity = Math.min(this.velocity + 1, 5);
             this.velocity = Math.min(this.velocity, find_next_car(this.next, 0));
-            if (this.velocity >= 1 && new Random().nextInt(100) >= 95) {
+            /*if (this.velocity >= 1 && new Random().nextInt(100) >= 95) {
                 this.velocity--;
-            }
+            }*/
             Point next_pos = find_next_position(this, 0, this.velocity);
             this.moved = true;
             this.velocity = 0;
