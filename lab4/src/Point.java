@@ -8,18 +8,23 @@ public class Point {
 
     public void move() {
         if (this.type == 1 && !this.moved) {
+            System.out.println("v1 = "+ this.velocity);
             this.velocity = Math.min(this.velocity + 1, 5);
+            System.out.println("v2 = "+ this.velocity);
             this.velocity = Math.min(this.velocity, find_next_car(this.next, 0));
+            System.out.println("v3 = "+ this.velocity);
             /*if (this.velocity >= 1 && new Random().nextInt(100) >= 95) {
                 this.velocity--;
             }*/
+            System.out.println(this.velocity + " = V4\n");
             Point next_pos = find_next_position(this, 0, this.velocity);
-            this.moved = true;
-            this.velocity = 0;
-            this.type = 0;
             next_pos.moved = true;
             next_pos.velocity = this.velocity;
             next_pos.type = 1;
+            this.moved = true;
+            this.velocity = 0;
+            this.type = 0;
+
 
         }
     }
