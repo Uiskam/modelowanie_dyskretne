@@ -105,7 +105,7 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
                 } else if (points[x][y].type == 5) {
                     g.setColor(new Color(0, 121, 0));
                 } else if (points[x][y].type == 0) {
-                        g.setColor(new Color(0xffffff));
+                    g.setColor(new Color(0xffffff));
                 } else {
                     System.out.println("NON EXISTING TYPE");
                 }
@@ -121,6 +121,8 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
         if ((x < points.length) && (x > 0) && (y < points[x].length) && (y > 0)) {
             if (editType == 0) {
                 points[x][y].clicked();
+            } else {
+                points[x][y].type = editType;
             }
             this.repaint();
         }
@@ -138,6 +140,8 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
         if ((x < points.length) && (x > 0) && (y < points[x].length) && (y > 0)) {
             if (editType == 0) {
                 points[x][y].clicked();
+            } else {
+                points[x][y].type = editType;
             }
             this.repaint();
         }

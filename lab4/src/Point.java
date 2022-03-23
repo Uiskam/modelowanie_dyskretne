@@ -5,6 +5,7 @@ public class Point {
     public Point next; //neigh point
     public boolean moved; //if point was changed in current iteration
     public int velocity;
+    public static Integer[] types = {0, 1, 2, 3, 5};
 
     public void move() {
         if (this.type == 1 && !this.moved) {

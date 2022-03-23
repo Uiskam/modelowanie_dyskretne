@@ -31,6 +31,10 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 
         JPanel buttonPanel = new JPanel();
 
+        drawType = new JComboBox<Integer>(Point.types);
+        drawType.addActionListener(this);
+        drawType.setActionCommand("drawType");
+
         start = new JButton("Start");
         start.setActionCommand("Start");
         start.addActionListener(this);
@@ -47,6 +51,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 
         buttonPanel.add(start);
         buttonPanel.add(clear);
+        buttonPanel.add(drawType);
         buttonPanel.add(pred);
 
         board = new Board(1800, 220 - buttonPanel.getHeight());
