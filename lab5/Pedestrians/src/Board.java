@@ -14,6 +14,8 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
     private Point[][] points;
     private int size = 10;
     public int editType = 0;
+    public boolean mooreNeighbourhood = true;
+    private int licznik = 0;
 
     public Board(int length, int height) {
         addMouseListener(this);
@@ -48,8 +50,8 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 
         for (int x = 1; x < points.length - 1; ++x) {
             for (int y = 1; y < points[x].length - 1; ++y) {
-                boolean mooreNeiMode = false;
-                if (mooreNeiMode) {
+                licznik++;
+                if (mooreNeighbourhood) {
                     Point curPoint = points[x][y];
                     int[] dX = {-1, -1, 0, 1, 1, 1, 0, -1};
                     int[] dY = {0, 1, 1, 1, 0, -1, -1, -1};
@@ -68,9 +70,6 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
         }
     }
 
-    private void initNeighborhood(int x, int y, boolean mooreNeiMode) {
-
-    }
 
     private void calculateField() {
         ArrayList<Point> toCheck = new ArrayList<>();

@@ -14,93 +14,106 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class GUI extends JPanel implements ActionListener, ChangeListener {
-	private static final long serialVersionUID = 1L;
-	private Timer timer;
-	private Board board;
-	private JButton start;
-	private JButton clear;
-	private JComboBox<Integer> drawType;
-	private JSlider pred;
-	private JFrame frame;
-	private int iterNum = 0;
-	private final int maxDelay = 500;
-	private final int initDelay = 100;
-	private boolean running = false;
+    private static final long serialVersionUID = 1L;
+    private Timer timer;
+    private Board board;
+    private JButton start;
+    private JButton clear;
+    private JButton neighbourhoodMode;
+    private JComboBox<Integer> drawType;
+    private JSlider pred;
+    private JFrame frame;
+    private int iterNum = 0;
+    private final int maxDelay = 500;
+    private final int initDelay = 100;
+    private boolean running = false;
 
-	public GUI(JFrame jf) {
-		frame = jf;
-		timer = new Timer(initDelay, this);
-		timer.stop();
-	}
+    public GUI(JFrame jf) {
+        frame = jf;
+        timer = new Timer(initDelay, this);
+        timer.stop();
+    }
 
-	public void initialize(Container container) {
-		container.setLayout(new BorderLayout());
-		container.setSize(new Dimension(1024, 768));
+    public void initialize(Container container) {
+        container.setLayout(new BorderLayout());
+        container.setSize(new Dimension(1024, 768));
 
-		JPanel buttonPanel = new JPanel();
+        JPanel buttonPanel = new JPanel();
 
-		start = new JButton("Start");
-		start.setActionCommand("Start");
-		start.addActionListener(this);
+        start = new JButton("Start");
+        start.setActionCommand("Start");
+        start.addActionListener(this);
 
-		clear = new JButton("Calc Field");
-		clear.setActionCommand("clear");
-		clear.addActionListener(this);
-		
-		pred = new JSlider();
-		pred.setMinimum(0);
-		pred.setMaximum(maxDelay);
-		pred.addChangeListener(this);
-		pred.setValue(maxDelay - timer.getDelay());
-		
-		drawType = new JComboBox<Integer>(Point.types);
-		drawType.addActionListener(this);
-		drawType.setActionCommand("drawType");
+        clear = new JButton("Calc Field");
+        clear.setActionCommand("clear");
+        clear.addActionListener(this);
 
-		buttonPanel.add(start);
-		buttonPanel.add(clear);
-		buttonPanel.add(drawType);
-		buttonPanel.add(pred);
+        neighbourhoodMode = new JButton("Moore mode");
+        neighbourhoodMode.setActionCommand("change nei mode");
+        neighbourhoodMode.setToolTipText("Changes neighbourhood mode (in order to activate wanted neighbourhood you must resize window after picking wanted mode)");
+        neighbourhoodMode.addActionListener(this);
 
-		board = new Board(1024, 768 - buttonPanel.getHeight());
-		container.add(board, BorderLayout.CENTER);
-		container.add(buttonPanel, BorderLayout.SOUTH);
-	}
+        pred = new JSlider();
+        pred.setMinimum(0);
+        pred.setMaximum(maxDelay);
+        pred.addChangeListener(this);
+        pred.setValue(maxDelay - timer.getDelay());
 
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(timer)) {
-			iterNum++;
-			frame.setTitle("Sound simulation (" + Integer.toString(iterNum) + " iteration)");
-			board.iteration();
-		} else {
-			String command = e.getActionCommand();
-			if (command.equals("Start")) {
-				if (!running) {
-					timer.start();
-					start.setText("Pause");
-				} else {
-					timer.stop();
-					start.setText("Start");
-				}
-				running = !running;
-				clear.setEnabled(true);
+        drawType = new JComboBox<Integer>(Point.types);
+        drawType.addActionListener(this);
+        drawType.setActionCommand("drawType");
 
-			} else if (command.equals("clear")) {
-				iterNum = 0;
-				timer.stop();
-				start.setEnabled(true);
-				board.clear();
-				frame.setTitle("Cellular Automata Toolbox");
-			}
-			else if (command.equals("drawType")){
-				int newType = (Integer)drawType.getSelectedItem();
-				board.editType = newType;
-			}
+        buttonPanel.add(start);
+        buttonPanel.add(clear);
+        buttonPanel.add(neighbourhoodMode);
+        buttonPanel.add(drawType);
+        buttonPanel.add(pred);
 
-		}
-	}
+        board = new Board(1024, 768 - buttonPanel.getHeight());
+        container.add(board, BorderLayout.CENTER);
+        container.add(buttonPanel, BorderLayout.SOUTH);
+    }
 
-	public void stateChanged(ChangeEvent e) {
-		timer.setDelay(maxDelay - pred.getValue());
-	}
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(timer)) {
+            iterNum++;
+            frame.setTitle("Sound simulation (" + Integer.toString(iterNum) + " iteration)");
+            board.iteration();
+        } else {
+            String command = e.getActionCommand();
+            if (command.equals("Start")) {
+                if (!running) {
+                    timer.start();
+                    start.setText("Pause");
+                } else {
+                    timer.stop();
+                    start.setText("Start");
+                }
+                running = !running;
+                clear.setEnabled(true);
+
+            } else if (command.equals("clear")) {
+                iterNum = 0;
+                timer.stop();
+                start.setEnabled(true);
+                board.clear();
+                frame.setTitle("Cellular Automata Toolbox");
+            } else if (command.equals("drawType")) {
+                int newType = (Integer) drawType.getSelectedItem();
+                board.editType = newType;
+            } else if (command.equals("change nei mode")) {
+                board.mooreNeighbourhood = !board.mooreNeighbourhood;
+                if (neighbourhoodMode.getText().equals("von Neuman mode")) {
+                    neighbourhoodMode.setText("Moore mode");
+                } else {
+                    neighbourhoodMode.setText("von Neuman mode");
+                }
+            }
+
+        }
+    }
+
+    public void stateChanged(ChangeEvent e) {
+        timer.setDelay(maxDelay - pred.getValue());
+    }
 }
