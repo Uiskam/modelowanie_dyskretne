@@ -28,7 +28,11 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
     public void iteration() {
         for (int x = 1; x < points.length - 1; ++x)
             for (int y = 1; y < points[x].length - 1; ++y)
-                points[x][y].move();
+                points[x][y].blocked = false;
+        for (int x = 1; x < points.length - 1; ++x)
+            for (int y = 1; y < points[x].length - 1; ++y)
+                if(!points[x][y].blocked)
+                    points[x][y].move();
         this.repaint();
     }
 
@@ -78,15 +82,21 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
             for (Point point : row) {
                 if (point.type == 2) {
                     point.staticField = 0;
-                    toCheck.addAll(point.neighbors);
-                    //System.out.println("exit add3ed");
+                    for(Point nei : point.neighbors) {
+                        if(nei.type != 1)
+                            toCheck.add(nei);
+                    }
                 }
             }
         }
         while (!toCheck.isEmpty()) {
             //System.out.println(toCheck.size());
             if(toCheck.get(0).calcStaticField()){
-                toCheck.addAll(toCheck.get(0).neighbors);
+                for(Point nei : toCheck.get(0).neighbors){
+                    if(nei.type != 1)
+                        toCheck.add(nei);
+                }
+                //toCheck.addAll(toCheck.get(0).neighbors);
             }
             toCheck.remove(0);
         }

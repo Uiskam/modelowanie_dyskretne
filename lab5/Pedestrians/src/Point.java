@@ -7,6 +7,7 @@ public class Point {
 	public int type;
 	public int staticField;
 	public boolean isPedestrian;
+    public boolean blocked;
 
 	public Point() {
 		type=0;
@@ -37,9 +38,11 @@ public class Point {
             //System.out.println("asd " + nextStep.staticField + " " + this.neighbors.get(0).staticField);
             if(nextStep.staticField != 100000) {
                 this.isPedestrian = false;
-                this.type = 0;
-                nextStep.isPedestrian = true;
-                nextStep.type = 3;
+                //this.type = 0;
+                if(nextStep.type != 2)
+                    nextStep.isPedestrian = true;
+                nextStep.blocked = true;
+                //nextStep.type = 3;
             }
         }
 	}
