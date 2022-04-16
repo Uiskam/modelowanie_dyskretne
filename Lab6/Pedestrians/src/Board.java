@@ -5,6 +5,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputListener;
@@ -31,7 +33,7 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
                 points[x][y].blocked = false;
         for (int x = 1; x < points.length - 1; ++x)
             for (int y = 1; y < points[x].length - 1; ++y)
-                if(!points[x][y].blocked)
+                if (!points[x][y].blocked)
                     points[x][y].move();
         this.repaint();
     }
@@ -76,29 +78,25 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 
 
     private void calculateField() {
-        ArrayList<Point> toCheck = new ArrayList<>();
-        //System.out.println("exit INIT");
-        for (Point[] row : points) {
-            for (Point point : row) {
-                if (point.type == 2) {
-                    point.staticField = 0;
-                    for(Point nei : point.neighbors) {
-                        if(nei.type != 1)
-                            toCheck.add(nei);
-                    }
+        for (int x = 1; x < points.length - 1; ++x) {
+            for (int y = 1; y < points[x].length - 1; ++y) {
+                if (points[x][y].type == 2) {
+                    points[x][y].staticField = 0;
+                    doDijkstra(x, y);
                 }
             }
         }
-        while (!toCheck.isEmpty()) {
-            //System.out.println(toCheck.size());
-            if(toCheck.get(0).calcStaticField()){
-                for(Point nei : toCheck.get(0).neighbors){
-                    if(nei.type != 1)
-                        toCheck.add(nei);
-                }
-                //toCheck.addAll(toCheck.get(0).neighbors);
+    }
+
+    private void doDijkstra(int xStart, int yStart) {
+        PriorityQueue<Point> dijkstraQueue = new PriorityQueue<>(Comparator.comparing(Point::getStaticField));
+        dijkstraQueue.add(points[xStart][yStart]);
+        while (!dijkstraQueue.isEmpty()) {
+            Point curPoint = dijkstraQueue.poll();
+            for (Point neighbour : curPoint.neighbors) {
+                if (neighbour.calcStaticField())
+                    dijkstraQueue.add(neighbour);
             }
-            toCheck.remove(0);
         }
     }
 
