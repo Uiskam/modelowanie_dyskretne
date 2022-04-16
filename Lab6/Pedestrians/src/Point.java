@@ -25,13 +25,28 @@ public class Point {
         for (Point neighbour : this.neighbors) {
             newPotentialField = Math.min(neighbour.staticField, newPotentialField);
         }
-        if (this.staticField > newPotentialField + 1) {
-            this.staticField = newPotentialField + 1;
-            return true;
+
+        if(!nearWall()) {
+            if (this.staticField > newPotentialField + 1) {
+                this.staticField = newPotentialField + 1;
+                return true;
+            }
+        } else {
+            if (this.staticField > newPotentialField + 15) {
+                this.staticField = newPotentialField + 15;
+                return true;
+            }
         }
         return false;
     }
 
+    private boolean nearWall() {
+        for(Point neighbour : this.neighbors) {
+            if(neighbour.type == 1)
+                return true;
+        }
+        return false;
+    }
     public void move() {
         if (this.isPedestrian) {
             Point nextStep = findNextStep();

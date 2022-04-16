@@ -17,7 +17,6 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
     private int size = 10;
     public int editType = 0;
     public boolean mooreNeighbourhood = true;
-    private int licznik = 0;
 
     public Board(int length, int height) {
         addMouseListener(this);
@@ -31,7 +30,8 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
         for (int x = 1; x < points.length - 1; ++x)
             for (int y = 1; y < points[x].length - 1; ++y)
                 points[x][y].blocked = false;
-        for (int x = 1; x < points.length - 1; ++x)
+
+            for (int x = 1; x < points.length - 1; ++x)
             for (int y = 1; y < points[x].length - 1; ++y)
                 if (!points[x][y].blocked)
                     points[x][y].move();
@@ -56,20 +56,20 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 
         for (int x = 1; x < points.length - 1; ++x) {
             for (int y = 1; y < points[x].length - 1; ++y) {
-                licznik++;
+
                 if (mooreNeighbourhood) {
                     Point curPoint = points[x][y];
                     int[] dX = {-1, -1, 0, 1, 1, 1, 0, -1};
                     int[] dY = {0, 1, 1, 1, 0, -1, -1, -1};
                     for (int i = 0; i < 8; i++) {
-                        curPoint.addNeighbor(points[(x + dX[i] + points.length) % points.length][(y + dY[i] + points[x].length) % points[x].length]);
+                        curPoint.addNeighbor(points[x + dX[i]][y + dY[i]]);
                     }
                 } else {
                     Point curPoint = points[x][y];
                     int[] dX = {-1, 0, 1, 0};
                     int[] dY = {0, 1, 0, -1};
                     for (int i = 0; i < dX.length; i++) {
-                        curPoint.addNeighbor(points[(x + dX[i] + points.length) % points.length][(y + dY[i] + points[x].length) % points[x].length]);
+                        curPoint.addNeighbor(points[x + dX[i]][y + dY[i]]);
                     }
                 }
             }
@@ -78,23 +78,24 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
 
 
     private void calculateField() {
-        for (int x = 1; x < points.length - 1; ++x) {
-            for (int y = 1; y < points[x].length - 1; ++y) {
-                if (points[x][y].type == 2) {
-                    points[x][y].staticField = 0;
-                    doDijkstra(x, y);
+        for (Point[] row : points) {
+            for (Point point : row) {
+                if (point.type == 2) {
+                    point.staticField = 0;
+                    doDijkstra(point);
                 }
             }
         }
+
     }
 
-    private void doDijkstra(int xStart, int yStart) {
+    private void doDijkstra(Point startPoint) {
         PriorityQueue<Point> dijkstraQueue = new PriorityQueue<>(Comparator.comparing(Point::getStaticField));
-        dijkstraQueue.add(points[xStart][yStart]);
+        dijkstraQueue.add(startPoint);
         while (!dijkstraQueue.isEmpty()) {
             Point curPoint = dijkstraQueue.poll();
             for (Point neighbour : curPoint.neighbors) {
-                if (neighbour.calcStaticField())
+                if (neighbour.type != 1 && neighbour.calcStaticField())
                     dijkstraQueue.add(neighbour);
             }
         }
