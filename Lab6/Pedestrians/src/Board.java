@@ -4,9 +4,7 @@ import java.awt.Insets;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputListener;
@@ -27,14 +25,16 @@ public class Board extends JComponent implements MouseInputListener, ComponentLi
     }
 
     public void iteration() {
+        ArrayList<Point> toBeMoved = new ArrayList<>();
         for (int x = 1; x < points.length - 1; ++x)
-            for (int y = 1; y < points[x].length - 1; ++y)
+            for (int y = 1; y < points[x].length - 1; ++y) {
                 points[x][y].blocked = false;
-
-            for (int x = 1; x < points.length - 1; ++x)
-            for (int y = 1; y < points[x].length - 1; ++y)
-                if (!points[x][y].blocked)
-                    points[x][y].move();
+                toBeMoved.add(points[x][y]);
+            }
+        Collections.shuffle(toBeMoved);
+        for (Point point : toBeMoved)
+            if (!point.blocked)
+                point.move();
         this.repaint();
     }
 
